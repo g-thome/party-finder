@@ -7,8 +7,8 @@ module.exports = {
   usage: '<horário> <nome do evento>',
   execute(msg, args) {
     if (!msg.content.startsWith(prefix) || msg.author.bot) return;
-    const time = args[0];
-    const partyName = args[1];
+    const time = args.shift();
+    const partyName = args.join(' ');
     
     const replyEmbed = {
       title: partyName,
