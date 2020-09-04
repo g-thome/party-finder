@@ -3,7 +3,8 @@ const Discord = require('discord.js');
 const client = new Discord.Client({partials: ['MESSAGE', 'CHANNEL', 'REACTION']});
 
 const { token, prefix, joinPartyEmoji } = require('./config');
-const { log } = require('console');
+const { addMemberToEmbed, removeMemberFromEmbed } = require('./embed.js');
+const { fetchReaction } = require('./reaction.js');
 
 client.commands = new Discord.Collection();
 
@@ -54,53 +55,30 @@ client.on('messageReactionAdd', async (reaction, user) => {
     return;
   }
 
-  if (reaction.partial) {
-		try {
-      await reaction.fetch();
-		} catch (error) {
-			console.log('Something went wrong when fetching the message: ', error);
-			return;
-		}
-  }
+  await fetchReaction(reaction);
 
   const isMessageMyOwn = reaction.message.author.equals(client.user);
 
   if (reaction._emoji.name === joinPartyEmoji && isMessageMyOwn) {
     let embed = reaction.message.embeds[0];
-    console.log(embed.fields[1]);
+    
+    const newEmbed = addMemberToEmbed(embed, user);
 
-    const groupMembers = embed.fields[1].value;
-
-    if (!groupMembers.split(',').includes(user.toString())) {
-      embed.fields[1].value = groupMembers + ',' + user.toString();
-      reaction.message.edit({ embed });
-    }
+    console.log(newEmbed);
+    reaction.message.edit({ embed: newEmbed });
   }
 });
 
 client.on('messageReactionRemove', async (reaction, user) => {
-  if (reaction.partial) {
-		try {
-      await reaction.fetch();
-		} catch (error) {
-			console.log('Something went wrong when fetching the message: ', error);
-			return;
-		}
-  }
+  await fetchReaction(reaction);
 
   if (reaction._emoji.name === joinPartyEmoji) {
-    console.log(user.username + ' removeu sua presenca');
-
     let embed = reaction.message.embeds[0];
 
-    const groupMembers = embed.fields[1].value.split(',');
-    console.log('lista de membros: ', groupMembers);
-
-    const updatedGroupMembers = groupMembers.filter(member => member !== user.toString());
-    console.log('nova lista de membros: ', updatedGroupMembers);
-
-    embed.fields[1].value = updatedGroupMembers.join(',');
-    reaction.message.edit({ embed });
+    const newEmbed = removeMemberFromEmbed(embed, user);
+    
+    console.log(newEmbed);
+    reaction.message.edit({ embed: newEmbed });
   }
 })
 
