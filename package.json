@@ -1,0 +1,15 @@
+{
+  "name": "party-finder",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": ["FFXIV", "Final Fantasy", "Discord", "Bot", "MMORPG"],
+  "author": "Gabriel Thomé",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^12.3.1"
+  }
+}
