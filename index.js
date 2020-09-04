@@ -1,9 +1,20 @@
+const fs = require('fs');
 const Discord = require('discord.js');
 const client = new Discord.Client({partials: ['MESSAGE', 'CHANNEL', 'REACTION']});
 
-const { token, prefix, joinPartyEmoji, newPartyCommand } = require('./config');
+const { token, prefix, joinPartyEmoji } = require('./config');
+const { log } = require('console');
 
-client.on('ready', () => {
+client.commands = new Discord.Collection();
+
+const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+
+for (const file of commandFiles) {
+	const command = require(`./commands/${file}`);
+	client.commands.set(command.name, command);
+}
+
+client.once('ready', () => {
   console.log(`logged in as ${client.user.tag}!`)
 });
 
@@ -11,39 +22,30 @@ client.on('message', msg => {
   if (!msg.content.startsWith(prefix) || msg.author.bot) return;
 
   const args = msg.content.slice(prefix.length).trim().split(/ +/)
-  const command = args.shift().toLowerCase();
+  const commandName = args.shift().toLowerCase();
 
-  if (command === newPartyCommand) {
-    if (args.length === 0) {
-      msg.channel.send('Preciso do horário e nome do grupo');
-      return;
+  const command = client.commands.get(commandName);
+
+  if (!command) return;
+
+  if (args.length < command.minArgs) {
+    let reply = `${msg.author} argumentos inválidos ou insuficientes`;
+
+    if (command.usage) {
+      reply += `\nUso do comando: ${prefix}${command.name} ${command.usage}`;
     }
 
-    if (args.length < 2) {
-      msg.channel.send('Preciso do nome do grupo');
-      return;
-    }
+    return msg.channel.send(reply);
+  }
 
-    const partyName = args[1];
-    const time = args[0];
+  console.log('args: ', args);
+  console.log('minArgs: ', command.minArgs);
 
-    const replyEmbed = {
-      title: partyName,
-      fields: [,
-        {
-          name: 'Horário',
-          value: time,
-        },
-        {
-          name: 'Participantes',
-          value: msg.member.toString()
-        }
-      ]
-    }
-
-    msg.channel.send({ embed: replyEmbed }).then(sentEmbed => {
-      sentEmbed.react(joinPartyEmoji)
-    });
+  try {
+    command.execute(msg, args);
+  } catch (error) {
+    console.error(error);
+    msg.reply('there was an error trying to execute that command!');
   }
 })
 
