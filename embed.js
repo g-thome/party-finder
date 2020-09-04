@@ -18,4 +18,9 @@ function addMemberToEmbed(embed, user) {
   return embed;
 }
 
-module.exports = { removeMemberFromEmbed, addMemberToEmbed }
+function getMemberCount(embed) {
+  const groupMembers = embed.fields[1].value.split(',');
+  return groupMembers.length;
+}
+
+module.exports = { removeMemberFromEmbed, addMemberToEmbed, getMemberCount }

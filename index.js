@@ -3,7 +3,7 @@ const Discord = require('discord.js');
 const client = new Discord.Client({partials: ['MESSAGE', 'CHANNEL', 'REACTION']});
 
 const { token, prefix, joinPartyEmoji } = require('./config');
-const { addMemberToEmbed, removeMemberFromEmbed } = require('./embed.js');
+const { addMemberToEmbed, removeMemberFromEmbed, getMemberCount } = require('./embed.js');
 const { fetchReaction } = require('./reaction.js');
 
 client.commands = new Discord.Collection();
@@ -75,9 +75,12 @@ client.on('messageReactionRemove', async (reaction, user) => {
   if (reaction._emoji.name === joinPartyEmoji) {
     let embed = reaction.message.embeds[0];
 
+    if (getMemberCount(embed) === 1) {
+      return reaction.message.delete();
+    } 
+
     const newEmbed = removeMemberFromEmbed(embed, user);
     
-    console.log(newEmbed);
     reaction.message.edit({ embed: newEmbed });
   }
 })
