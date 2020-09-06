@@ -1,14 +1,15 @@
-const { prefix, joinPartyEmoji } = require('../config.js');
+import { Message } from "discord.js";
+import config from '../config';
 
 module.exports = {
   name: 'nvgrupo',
   minArgs: 2,
   guildOnly: true,
   usage: '<horário> <nome do evento>',
-  execute(msg, args) {
-    if (!msg.content.startsWith(prefix) || msg.author.bot) return;
-    const time = args[0];
-    const partyName = args[1];
+  execute(msg: Message, args: String[]) {
+    const time = args.shift();
+    const partyName = args.join(' ');
+    const member = msg.member?.toString();
     
     const replyEmbed = {
       title: partyName,
@@ -19,13 +20,13 @@ module.exports = {
         },
         {
           name: 'Participantes',
-          value: msg.member.toString()
+          value: member
         }
       ]
     }
 
     msg.channel.send({ embed: replyEmbed }).then(sentEmbed => {
-      sentEmbed.react(joinPartyEmoji)
+      sentEmbed.react(config.joinPartyEmoji)
     });
   }
 }
