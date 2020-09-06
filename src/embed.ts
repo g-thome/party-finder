@@ -1,4 +1,6 @@
-function removeMemberFromEmbed(embed, user) {
+import { MessageEmbed, User, PartialUser } from "discord.js";
+
+function removeMemberFromEmbed(embed: MessageEmbed, user: User|PartialUser): Object {
   const groupMembers = embed.fields[1].value.split(',');
 
   const updatedGroupMembers = groupMembers.filter(member => member !== user.toString());
@@ -7,7 +9,7 @@ function removeMemberFromEmbed(embed, user) {
   return embed;
 }
 
-function addMemberToEmbed(embed, user) {
+function addMemberToEmbed(embed: MessageEmbed, user: User|PartialUser) {
   const groupMembers = embed.fields[1].value.split(',');
 
   if (!groupMembers.includes(user.toString())) {
@@ -18,9 +20,9 @@ function addMemberToEmbed(embed, user) {
   return embed;
 }
 
-function getMemberCount(embed) {
+function getMemberCount(embed: MessageEmbed) {
   const groupMembers = embed.fields[1].value.split(',');
   return groupMembers.length;
 }
 
-module.exports = { removeMemberFromEmbed, addMemberToEmbed, getMemberCount }
+export { removeMemberFromEmbed, addMemberToEmbed, getMemberCount }
