@@ -5,3 +5,5 @@ interface Command {
   usage: String,
   execute: Function
 }
+
+export default Command;

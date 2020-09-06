@@ -5,6 +5,7 @@ const client = new Discord.Client({partials: ['MESSAGE', 'CHANNEL', 'REACTION']}
 import config from './config';
 import { addMemberToEmbed, removeMemberFromEmbed, getMemberCount } from './embed';
 import { fetchReaction } from './reaction';
+import Command from './interfaces/Command';
 
 let commands = new Discord.Collection<String, Command>();
 
