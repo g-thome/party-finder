@@ -6,10 +6,18 @@ module.exports = {
   name: 'nvgrupo',
   minArgs: 2,
   guildOnly: true,
-  usage: '<horário>h \"<nome do evento>\"\nex: 20h among us',
+  usage: '20h "among us"',
   execute(msg: Message, args: String[]) {
-    const timeRegex = /^\d{1,2}(h|:)\d{0,2}$/;
-    const time = args.filter(x => timeRegex.test(x.toString()))[0];
+    const argsString = args.join(' ');
+
+    const timeRegex = /(\s|^)\d{1,2}(h|:)\d{0,2}(\s|$)/;
+    const timeList = argsString.match(timeRegex);
+
+    if (!timeList) {
+      throw new Error("preciso de um horário");
+    }
+
+    const time = timeList[0];
 
     const dateTime = new Date();
     dateTime.setHours(parseInt(getHours(time.toString())));
@@ -18,8 +26,8 @@ module.exports = {
     const hours = dateTime.getHours().toString().padStart(2, '0');
     const minutes = dateTime.getMinutes().toString().padStart(2, '0');
 
-    const dateRegex = /^\d{0,2}\/\d{0,2}$/;
-    const date = args.filter(x => dateRegex.test(x.toString()))[0];
+    const dateRegex = /(\s|^)\d{0,2}\/\d{0,2}(\s|$)/;
+    const date = argsString.match(dateRegex);
 
     if (date) {
       dateTime.setDate(parseInt(getDate(date.toString())));
@@ -29,7 +37,16 @@ module.exports = {
     const day = dateTime.getDate().toString().padStart(2, '0');
     const month = dateTime.getMonth().toString().padStart(2, '0');
 
-    const partyName = args.join(' ');
+    const partyNameRegex = /(?<=\").*(?=\")/;
+
+    const partyNameList = argsString.match(partyNameRegex);
+
+    if (!partyNameList || !partyNameList[0]) {
+      throw new Error("preciso do nome do grupo");
+    }
+
+    const partyName = partyNameList[0];
+
     const member = msg.member?.toString();
 
     const replyEmbed = {
