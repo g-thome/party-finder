@@ -1,5 +1,5 @@
 import { Message } from "discord.js";
-import { getDate, getMonth, getHours, getMinutes } from '../dateTime';
+import { getDate, getMonth, getHours, getMinutes, isValidDay } from '../dateTime';
 import config from '../config';
 
 module.exports = {
@@ -30,12 +30,23 @@ module.exports = {
     const date = argsString.match(dateRegex);
 
     if (date) {
-      dateTime.setDate(parseInt(getDate(date.toString())));
-      dateTime.setMonth(parseInt(getMonth(date.toString())));
+      const intDay = parseInt(getDate(date.toString()));
+      const intMonth = parseInt(getMonth(date.toString())) - 1;
+
+      if (intMonth > 11) {
+        throw new Error('mês inválido');
+      }
+
+      if (!isValidDay(intDay, intMonth)) {
+        throw new Error('data inválida');
+      }
+
+      dateTime.setDate(intDay);
+      dateTime.setMonth(intMonth);
     }
 
     const day = dateTime.getDate().toString().padStart(2, '0');
-    const month = dateTime.getMonth().toString().padStart(2, '0');
+    const month = (dateTime.getMonth() + 1).toString().padStart(2, '0');
 
     const partyNameRegex = /(?<=\").*(?=\")/;
 

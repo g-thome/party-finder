@@ -18,4 +18,20 @@ function getMinutes(dateTime: string) {
   return dateTime.split(/h|\:/)[1];
 }
 
-export { getDate, getMonth, getYear, getHours, getMinutes };
+function isValidDay(day: number, month: number) {
+  if (day === 0 || day > 31) {
+    return false;
+  }
+
+  if (month === 1 && day > 29) {
+    return false;
+  }
+
+  if ((month % 2 !== 0) && day === 31) {
+    return false;
+  }
+
+  return true;
+}
+
+export { getDate, getMonth, getYear, getHours, getMinutes, isValidDay };
