@@ -1,22 +1,61 @@
 import { Message } from "discord.js";
+import { getTimeFromString, getDateFromString, isValidDate } from '../dateTime';
 import config from '../config';
 
 module.exports = {
   name: 'nvgrupo',
   minArgs: 2,
   guildOnly: true,
-  usage: '<horário> <nome do evento>',
+  usage: '20h "among us"',
   execute(msg: Message, args: String[]) {
-    const time = args.shift();
-    const partyName = args.join(' ');
+    const argsString = args.join(' ');
+
+    const time = getTimeFromString(argsString);
+
+    if (!time) {
+      throw new Error('preciso de um horário');
+    }
+
+    const dateTime = new Date();
+
+    dateTime.setHours(time.hours);
+    dateTime.setMinutes(time.minutes);
+
+    const date = getDateFromString(argsString);
+
+    if (date) {
+      dateTime.setDate(date.day);
+      dateTime.setMonth(date.month);
+    }
+
+    if (!isValidDate(dateTime)) {
+      throw new Error('data inválida');
+    }
+
+    const hours = dateTime.getHours().toString().padStart(2, '0');
+    const minutes = dateTime.getMinutes().toString().padStart(2, '0');
+
+    const day = dateTime.getDate().toString().padStart(2, '0');
+    const month = (dateTime.getMonth() + 1).toString().padStart(2, '0');
+
+    const partyNameRegex = /(?<=\").*(?=\")/;
+
+    const partyNameList = argsString.match(partyNameRegex);
+
+    if (!partyNameList || !partyNameList[0]) {
+      throw new Error('preciso do nome do grupo');
+    }
+
+    const partyName = partyNameList[0];
+
     const member = msg.member?.toString();
-    
+
     const replyEmbed = {
       title: partyName,
       fields: [,
         {
           name: 'Horário',
-          value: time,
+          value: `${day}/${month} - ${hours}:${minutes}`
         },
         {
           name: 'Participantes',
