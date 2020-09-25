@@ -31,7 +31,30 @@ function isValidDay(day: number, month: number) {
     return false;
   }
 
+  const now = new Date();
+
+  if (month < now.getMonth()) {
+    return false;
+  }
+
+  if (day < now.getDate() && month === now.getMonth()) {
+    return false;
+  }
+
   return true;
 }
 
-export { getDate, getMonth, getYear, getHours, getMinutes, isValidDay };
+function isValidTime(hours: number, minutes: number) {
+  const now = new Date();
+  if (hours < now.getHours()) {
+    return false;
+  }
+
+  if (hours === now.getHours() && minutes < now.getMinutes()) {
+    return false;
+  }
+
+  return true;
+}
+
+export { getDate, getMonth, getYear, getHours, getMinutes, isValidDay, isValidTime };
