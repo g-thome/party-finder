@@ -1,5 +1,5 @@
 import { Message } from "discord.js";
-import { getDate, getMonth, getHours, getMinutes, isValidDay, isValidTime } from '../dateTime';
+import { isValidTime, getTimeFromString, getDateFromString } from '../dateTime';
 import config from '../config';
 
 module.exports = {
@@ -10,47 +10,29 @@ module.exports = {
   execute(msg: Message, args: String[]) {
     const argsString = args.join(' ');
 
-    const timeRegex = /(\s|^)\d{1,2}(h|:)\d{0,2}(\s|$)/;
-    const timeList = argsString.match(timeRegex);
+    const time = getTimeFromString(argsString);
 
-    if (!timeList) {
+    if (!time) {
       throw new Error("preciso de um horário");
     }
 
-    const time = timeList[0];
-
     const dateTime = new Date();
 
-    const rawHours = parseInt(getHours(time.toString()));
-    const rawMinutes = (parseInt(getMinutes(time.toString())) || 0);
-
-    if (!isValidTime(rawHours, rawMinutes)) {
+    if (!isValidTime(time.hours, time.minutes)) {
       throw new Error('horário inválido');
     }
 
-    dateTime.setHours(rawHours);
-    dateTime.setMinutes(rawMinutes);
+    dateTime.setHours(time.hours);
+    dateTime.setMinutes(time.minutes);
 
     const hours = dateTime.getHours().toString().padStart(2, '0');
     const minutes = dateTime.getMinutes().toString().padStart(2, '0');
 
-    const dateRegex = /(\s|^)\d{0,2}\/\d{0,2}(\s|$)/;
-    const date = argsString.match(dateRegex);
+    const date = getDateFromString(argsString);
 
     if (date) {
-      const intDay = parseInt(getDate(date.toString()));
-      const intMonth = parseInt(getMonth(date.toString())) - 1;
-
-      if (intMonth > 11) {
-        throw new Error('mês inválido');
-      }
-
-      if (!isValidDay(intDay, intMonth)) {
-        throw new Error('data inválida');
-      }
-
-      dateTime.setDate(intDay);
-      dateTime.setMonth(intMonth);
+      dateTime.setDate(date.day);
+      dateTime.setMonth(date.month);
     }
 
     const day = dateTime.getDate().toString().padStart(2, '0');

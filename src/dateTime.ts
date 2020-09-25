@@ -1,3 +1,6 @@
+import SimpleDate from "./interfaces/SimpleDate";
+import Time from "./interfaces/Time";
+
 function getDate(dateTime: string) {
   return dateTime.split('/')[0];
 }
@@ -57,4 +60,59 @@ function isValidTime(hours: number, minutes: number) {
   return true;
 }
 
-export { getDate, getMonth, getYear, getHours, getMinutes, isValidDay, isValidTime };
+function getTimeFromString(s: string): Time | null {
+  const timeRegex = /(\s|^)\d{1,2}(h|:)\d{0,2}(\s|$)/;
+  const timeList = s.match(timeRegex);
+
+  if (!timeList) {
+    return null;
+  }
+
+  const time = timeList[0];
+  const hours = parseInt(getHours(time.toString()));
+  const minutes = (parseInt(getMinutes(time.toString())) || 0);
+
+  return { hours, minutes };
+}
+
+function getDateFromString(s: string): SimpleDate | null {
+  const dateRegex = /(\s|^)\d{0,2}\/\d{0,2}(\s|$)/;
+  const date = s.match(dateRegex);
+
+  if (!date) {
+    return null;
+  }
+
+  const day = parseInt(getDate(date.toString()));
+  const month = parseInt(getMonth(date.toString())) - 1;
+
+  if (month > 11) {
+    return null;
+  }
+
+  if (!isValidDay(day, month)) {
+    return null;
+  }
+
+  return { day, month };
+}
+
+// function getDateFromArgs(args: String[]): Date {
+//   const joinedArgs = args.join(' ');
+
+//   const timeRegex = /(\s|^)\d{1,2}(h|:)\d{0,2}(\s|$)/;
+//   const timeList = joinedArgs.match(timeRegex);
+
+//   if (!timeList) {
+//     throw new Error("preciso de um horário");
+//   }
+
+//   const time = timeList[0];
+
+//   const dateTime = new Date();
+
+//   const rawHours = parseInt(getHours(time.toString()));
+//   const rawMinutes = (parseInt(getMinutes(time.toString())) || 0);
+// }
+
+export { getDate, getMonth, getYear, getHours, getMinutes, isValidDay, isValidTime, getTimeFromString, getDateFromString };
