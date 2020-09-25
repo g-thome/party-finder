@@ -9,10 +9,6 @@ function getMonth(dateTime: string) {
   return dateTime.split('/')[1];
 }
 
-function getYear(dateTime: string) {
-  return dateTime.split('/')[2];
-}
-
 function getHours(dateTime: string) {
   return dateTime.split(/h|\:/)[0];
 }
@@ -47,7 +43,7 @@ function isValidDay(day: number, month: number) {
   return true;
 }
 
-function isValidTime(hours: number, minutes: number) {
+function isValidTime(hours: number, minutes: number): boolean {
   const now = new Date();
   if (hours < now.getHours()) {
     return false;
@@ -97,22 +93,8 @@ function getDateFromString(s: string): SimpleDate | null {
   return { day, month };
 }
 
-// function getDateFromArgs(args: String[]): Date {
-//   const joinedArgs = args.join(' ');
-
-//   const timeRegex = /(\s|^)\d{1,2}(h|:)\d{0,2}(\s|$)/;
-//   const timeList = joinedArgs.match(timeRegex);
-
-//   if (!timeList) {
-//     throw new Error("preciso de um horário");
-//   }
-
-//   const time = timeList[0];
-
-//   const dateTime = new Date();
-
-//   const rawHours = parseInt(getHours(time.toString()));
-//   const rawMinutes = (parseInt(getMinutes(time.toString())) || 0);
-// }
-
-export { getDate, getMonth, getYear, getHours, getMinutes, isValidDay, isValidTime, getTimeFromString, getDateFromString };
+function isValidDate(d: Date): boolean {
+  const now = new Date();
+  return d > now;
+}
+export { isValidDay, isValidTime, isValidDate, getTimeFromString, getDateFromString };

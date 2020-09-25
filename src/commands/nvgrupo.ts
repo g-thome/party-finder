@@ -1,5 +1,5 @@
 import { Message } from "discord.js";
-import { isValidTime, getTimeFromString, getDateFromString } from '../dateTime';
+import { getTimeFromString, getDateFromString, isValidDate } from '../dateTime';
 import config from '../config';
 
 module.exports = {
@@ -13,20 +13,13 @@ module.exports = {
     const time = getTimeFromString(argsString);
 
     if (!time) {
-      throw new Error("preciso de um horário");
+      throw new Error('preciso de um horário');
     }
 
     const dateTime = new Date();
 
-    if (!isValidTime(time.hours, time.minutes)) {
-      throw new Error('horário inválido');
-    }
-
     dateTime.setHours(time.hours);
     dateTime.setMinutes(time.minutes);
-
-    const hours = dateTime.getHours().toString().padStart(2, '0');
-    const minutes = dateTime.getMinutes().toString().padStart(2, '0');
 
     const date = getDateFromString(argsString);
 
@@ -34,6 +27,13 @@ module.exports = {
       dateTime.setDate(date.day);
       dateTime.setMonth(date.month);
     }
+
+    if (!isValidDate(dateTime)) {
+      throw new Error('data inválida');
+    }
+
+    const hours = dateTime.getHours().toString().padStart(2, '0');
+    const minutes = dateTime.getMinutes().toString().padStart(2, '0');
 
     const day = dateTime.getDate().toString().padStart(2, '0');
     const month = (dateTime.getMonth() + 1).toString().padStart(2, '0');
