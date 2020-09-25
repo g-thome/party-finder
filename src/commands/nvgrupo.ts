@@ -1,5 +1,5 @@
 import { Message } from "discord.js";
-import { getDate, getMonth, getHours, getMinutes, isValidDay } from '../dateTime';
+import { getDate, getMonth, getHours, getMinutes, isValidDay, isValidTime } from '../dateTime';
 import config from '../config';
 
 module.exports = {
@@ -20,8 +20,16 @@ module.exports = {
     const time = timeList[0];
 
     const dateTime = new Date();
-    dateTime.setHours(parseInt(getHours(time.toString())));
-    dateTime.setMinutes(parseInt(getMinutes(time.toString())) || 0);
+
+    const rawHours = parseInt(getHours(time.toString()));
+    const rawMinutes = (parseInt(getMinutes(time.toString())) || 0);
+
+    if (!isValidTime(rawHours, rawMinutes)) {
+      throw new Error('horário inválido');
+    }
+
+    dateTime.setHours(rawHours);
+    dateTime.setMinutes(rawMinutes);
 
     const hours = dateTime.getHours().toString().padStart(2, '0');
     const minutes = dateTime.getMinutes().toString().padStart(2, '0');
@@ -53,7 +61,7 @@ module.exports = {
     const partyNameList = argsString.match(partyNameRegex);
 
     if (!partyNameList || !partyNameList[0]) {
-      throw new Error("preciso do nome do grupo");
+      throw new Error('preciso do nome do grupo');
     }
 
     const partyName = partyNameList[0];
