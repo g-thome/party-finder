@@ -19,12 +19,13 @@ const commandFiles = fs
   .readdirSync(__dirname + '/commands')
   .filter((file) => file.endsWith('.js'));
 
-for (const file of commandFiles) {
-  const command = await import(`./commands/${file}`);
-  commands.set(command.name, command);
-}
+client.once('ready', async () => {
 
-client.once('ready', () => {
+  for (const file of commandFiles) {
+    const command = await import(`./commands/${file}`);
+    commands.set(command.name, command);
+  }
+
   const clientInfo = client?.user?.tag;
   console.log(`logged in as ${clientInfo}!`);
 });

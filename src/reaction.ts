@@ -5,7 +5,6 @@ async function fetchReaction(reaction: MessageReaction) {
     try {
       await reaction.fetch();
     } catch (error) {
-      /* tslint-ignore-next-line */
       console.log('Something went wrong when fetching the message: ', error);
       return;
     }
