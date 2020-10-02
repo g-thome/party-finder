@@ -1,6 +1,6 @@
-import { MessageEmbed, User, PartialUser } from "discord.js";
+import { MessageEmbed, User, PartialUser } from 'discord.js';
 
-function removeMemberFromEmbed(embed: MessageEmbed, user: User|PartialUser): Object {
+function removeMemberFromEmbed(embed: MessageEmbed, user: User|PartialUser): object {
   const groupMembers = embed.fields[1].value.split(',');
 
   const updatedGroupMembers = groupMembers.filter(member => member !== user.toString());

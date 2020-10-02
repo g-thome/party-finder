@@ -1,4 +1,4 @@
-import { Message } from "discord.js";
+import { Message } from 'discord.js';
 import { getTimeFromString, getDateFromString, isValidDate } from '../dateTime';
 import config from '../config';
 
@@ -7,7 +7,7 @@ module.exports = {
   minArgs: 2,
   guildOnly: true,
   usage: '20h "among us"',
-  execute(msg: Message, args: String[]) {
+  execute(msg: Message, args: string[]) {
     const argsString = args.join(' ');
 
     const time = getTimeFromString(argsString);

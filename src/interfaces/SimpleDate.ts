@@ -1,6 +1,6 @@
 interface SimpleDate {
-  day: number,
-  month: number
-};
+  day: number;
+  month: number;
+}
 
 export default SimpleDate;
