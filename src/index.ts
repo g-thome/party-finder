@@ -82,7 +82,7 @@ client.on('messageReactionRemove', async (reaction, user) => {
   if (reaction.emoji.name === config.joinPartyEmoji) {
     const embed = reaction.message.embeds[0];
 
-    if (getMemberCount(embed) === 1) {
+    if (getMemberCount(embed) === 1 && (embed.fields[1].value === user.toString())) {
       reaction.message.delete();
       return;
     }
