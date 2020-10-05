@@ -1,6 +1,6 @@
 interface Time {
-  hours: number,
-  minutes: number
-};
+  hours: number;
+  minutes: number;
+}
 
 export default Time;

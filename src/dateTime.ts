@@ -1,5 +1,5 @@
-import SimpleDate from "./interfaces/SimpleDate";
-import Time from "./interfaces/Time";
+import SimpleDate from './interfaces/SimpleDate';
+import Time from './interfaces/Time';
 
 function getDate(dateTime: string) {
   return dateTime.split('/')[0];
@@ -65,8 +65,8 @@ function getTimeFromString(s: string): Time | null {
   }
 
   const time = timeList[0];
-  const hours = parseInt(getHours(time.toString()));
-  const minutes = (parseInt(getMinutes(time.toString())) || 0);
+  const hours = parseInt(getHours(time.toString()), 10);
+  const minutes = (parseInt(getMinutes(time.toString()), 10) || 0);
 
   return { hours, minutes };
 }
@@ -79,8 +79,8 @@ function getDateFromString(s: string): SimpleDate | null {
     return null;
   }
 
-  const day = parseInt(getDate(date.toString()));
-  const month = parseInt(getMonth(date.toString())) - 1;
+  const day = parseInt(getDate(date.toString()), 10);
+  const month = parseInt(getMonth(date.toString()), 10) - 1;
 
   if (month > 11) {
     return null;

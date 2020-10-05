@@ -1,4 +1,4 @@
-import { MessageReaction } from "discord.js";
+import { MessageReaction } from 'discord.js';
 
 async function fetchReaction(reaction: MessageReaction) {
   if (reaction.partial) {
