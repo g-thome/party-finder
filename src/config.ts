@@ -4,5 +4,6 @@ export default {
     joinPartyEmoji: '✅',
     botId: '750734919629537350',
     botDiscriminator: '2875',
-    newPartyCommand: 'nvgrupo'
+    newPartyCommand: 'nvgrupo',
+    APIEndpoint: process.env.API_ENDPOINT
 };

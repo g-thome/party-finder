@@ -31,14 +31,14 @@ client.once('ready', async () => {
 });
 
 client.on('message', (msg) => {
-  if (!msg.content.startsWith(config.prefix) || msg.author.bot) return;
+  if (!msg.content.startsWith(config.prefix) || msg.author.bot) { return; }
 
   const args = msg.content.slice(config.prefix.length).trim().split(/ +/);
   const commandName = args?.shift()?.toLowerCase();
 
   const command = commands.get(commandName || '');
 
-  if (!command) return;
+  if (!command) { return; }
 
   if (args.length < command.minArgs) {
     let reply = `argumentos insuficientes`;
@@ -60,7 +60,7 @@ client.on('message', (msg) => {
 });
 
 client.on('messageReactionAdd', async (reaction, user) => {
-  if (!client.user) return;
+  if (!client.user) { return; }
 
   if (user.equals(client.user)) {
     return;

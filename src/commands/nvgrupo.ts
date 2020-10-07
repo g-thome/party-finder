@@ -1,5 +1,6 @@
 import { Message } from 'discord.js';
 import { getTimeFromString, getDateFromString, isValidDate } from '../dateTime';
+import { saveGrupo } from '../API';
 import config from '../config';
 
 module.exports = {
@@ -7,7 +8,7 @@ module.exports = {
   minArgs: 2,
   guildOnly: true,
   usage: '20h "among us"',
-  execute(msg: Message, args: string[]) {
+  async execute(msg: Message, args: string[]) {
     const argsString = args.join(' ');
 
     const time = getTimeFromString(argsString);
@@ -48,7 +49,11 @@ module.exports = {
 
     const partyName = partyNameList[0];
 
-    const member = msg.member?.toString();
+    if (!msg.member) {
+      throw new Error('Algo deu errado :(');
+    }
+
+    const member = msg.member.toString();
 
     const replyEmbed = {
       title: partyName,
@@ -61,11 +66,20 @@ module.exports = {
           name: 'Participantes',
           value: member
         }
-      ]
+      ],
+    };
+
+    msg.channel.send({ embed: replyEmbed }).then((sentEmbed) => {
+      sentEmbed.react(config.joinPartyEmoji);
+    });
+
+    const APIResponse = await saveGrupo({ name: partyName, dateTime, members: [member] });
+
+    if (!APIResponse) {
+      console.log('n salvou');
+      return;
     }
 
-    msg.channel.send({ embed: replyEmbed }).then(sentEmbed => {
-      sentEmbed.react(config.joinPartyEmoji)
-    });
-  }
-}
+    console.log('salvou: ', APIResponse);
+  },
+};
