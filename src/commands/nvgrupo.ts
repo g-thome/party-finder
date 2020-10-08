@@ -1,5 +1,5 @@
 import { Message } from 'discord.js';
-import { getTimeFromString, getDateFromString, isValidDate } from '../dateTime';
+import { getTimeFromString, getDateFromString, isValidDate, getFormatedDate } from '../dateTime';
 import { saveGrupo } from '../API';
 import config from '../config';
 
@@ -33,11 +33,7 @@ module.exports = {
       throw new Error('data inválida');
     }
 
-    const hours = dateTime.getHours().toString().padStart(2, '0');
-    const minutes = dateTime.getMinutes().toString().padStart(2, '0');
-
-    const day = dateTime.getDate().toString().padStart(2, '0');
-    const month = (dateTime.getMonth() + 1).toString().padStart(2, '0');
+    const formatedDate = getFormatedDate(dateTime);
 
     const partyNameRegex = /(?<=\").*(?=\")/;
 
@@ -60,12 +56,12 @@ module.exports = {
       fields: [,
         {
           name: 'Horário',
-          value: `${day}/${month} - ${hours}:${minutes}`
+          value: formatedDate,
         },
         {
           name: 'Participantes',
-          value: member
-        }
+          value: member,
+        },
       ],
     };
 
