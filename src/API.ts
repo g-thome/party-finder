@@ -14,4 +14,19 @@ async function saveGrupo(grupo: Grupo) {
   }
 }
 
-export { saveGrupo };
+async function getGruposByMember(member: string) {
+  if (!config.APIEndpoint) { return null; }
+
+  try {
+    const result = axios.get(config.APIEndpoint, {
+      params: { member },
+    });
+
+    return result;
+  } catch (e) {
+    console.log(e.message);
+    return null;
+  }
+}
+
+export { saveGrupo, getGruposByMember };
