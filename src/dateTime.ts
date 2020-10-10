@@ -97,4 +97,16 @@ function isValidDate(d: Date): boolean {
   const now = new Date();
   return d > now;
 }
-export { isValidDay, isValidTime, isValidDate, getTimeFromString, getDateFromString };
+
+function getFormatedDate(d: Date): string {
+  const hours = d.getHours().toString().padStart(2, '0');
+  const minutes = d.getMinutes().toString().padStart(2, '0');
+
+  const day = d.getDate().toString().padStart(2, '0');
+  const month = (d.getMonth() + 1).toString().padStart(2, '0');
+
+  return `${day}/${month} - ${hours}:${minutes}`;
+}
+
+export { isValidDay, isValidTime, isValidDate, getTimeFromString, getDateFromString, getFormatedDate };
+

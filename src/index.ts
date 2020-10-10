@@ -62,7 +62,9 @@ client.on('message', (msg) => {
 client.on('messageReactionAdd', async (reaction, user) => {
   if (!client.user) { return; }
 
-  if (user.equals(client.user)) {
+  const isReactionFromBot = user.equals(client.user);
+
+  if (isReactionFromBot) {
     return;
   }
 
@@ -72,6 +74,8 @@ client.on('messageReactionAdd', async (reaction, user) => {
     const embed = reaction.message.embeds[0];
 
     const newEmbed = addMemberToEmbed(embed, user);
+
+    console.log(newEmbed.fields[1].value);
     reaction.message.edit({ embed: newEmbed });
   }
 });
