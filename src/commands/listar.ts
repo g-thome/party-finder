@@ -15,11 +15,13 @@ module.exports = {
     const response = await getGruposByMember(msg.member.toString());
 
     if (!response) {
-      msg.reply('não achei nada');
+      msg.reply('erro buscando dados do banco');
       return;
     }
 
-    const grupos = response.data;
+    const AllGrupos = response;
+
+    const grupos = AllGrupos.filter((g) => new Date(g.dateTime) > new Date());
 
     for (const grupo of grupos) {
       const date = new Date(grupo.dateTime);

@@ -14,15 +14,15 @@ async function saveGrupo(grupo: Grupo) {
   }
 }
 
-async function getGruposByMember(member: string) {
+async function getGruposByMember(member: string): Promise<Grupo[]|null> {
   if (!config.APIEndpoint) { return null; }
 
   try {
-    const result = axios.get(config.APIEndpoint, {
+    const result = await axios.get(config.APIEndpoint, {
       params: { members: member },
     });
 
-    return result;
+    return result.data;
   } catch (e) {
     console.log(e.message);
     return null;
