@@ -51,12 +51,7 @@ client.on('message', (msg) => {
     return;
   }
 
-  try {
-    command.execute(msg, args);
-  } catch (error) {
-    msg.reply(error.message);
-    return;
-  }
+  command.execute(msg, args).catch((e) => msg.reply(e.message));
 });
 
 client.on('messageReactionAdd', async (reaction, user) => {

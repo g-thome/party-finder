@@ -5,7 +5,7 @@ interface Command {
   minArgs: number;
   guildOnly: boolean;
   usage: string;
-  execute: (msg: Message, args: string[]) => void;
+  execute: (msg: Message, args: string[]) => Promise<any>;
 }
 
 export default Command;
