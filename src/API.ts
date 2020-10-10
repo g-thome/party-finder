@@ -19,7 +19,7 @@ async function getGruposByMember(member: string) {
 
   try {
     const result = axios.get(config.APIEndpoint, {
-      params: { member },
+      params: { members: member },
     });
 
     return result;
