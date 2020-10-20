@@ -1,6 +1,6 @@
 import axios from 'axios';
 import config from './config';
-import Grupo from './interfaces/APIGrupo';
+import Grupo from '../interfaces/APIGrupo';
 
 async function saveGrupo(grupo: Grupo) {
   if (!config.APIEndpoint) { return null; }
