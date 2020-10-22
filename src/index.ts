@@ -11,9 +11,9 @@ import {
   getMemberCount,
 } from './embed';
 import { fetchReaction } from './reaction';
-import Command from './interfaces/Command';
+import ICommand from './interfaces/ICommand';
 
-const commands = new Discord.Collection<string, Command>();
+const commands = new Discord.Collection<string, ICommand>();
 
 const commandFiles = fs
   .readdirSync(__dirname + '/commands')

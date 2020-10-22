@@ -1,5 +1,5 @@
-import SimpleDate from './interfaces/SimpleDate';
-import Time from './interfaces/Time';
+import ISimpleDate from './interfaces/ISimpleDate';
+import ITime from './interfaces/ITime';
 
 function getDate(dateTime: string) {
   return dateTime.split('/')[0];
@@ -56,7 +56,7 @@ function isValidTime(hours: number, minutes: number): boolean {
   return true;
 }
 
-function getTimeFromString(s: string): Time | null {
+function getTimeFromString(s: string): ITime | null {
   const timeRegex = /(\s|^)\d{1,2}(h|:)\d{0,2}(\s|$)/;
   const timeList = s.match(timeRegex);
 
@@ -71,7 +71,7 @@ function getTimeFromString(s: string): Time | null {
   return { hours, minutes };
 }
 
-function getDateFromString(s: string): SimpleDate | null {
+function getDateFromString(s: string): ISimpleDate | null {
   const dateRegex = /(\s|^)\d{0,2}\/\d{0,2}(\s|$)/;
   const date = s.match(dateRegex);
 
@@ -109,4 +109,3 @@ function getFormatedDate(d: Date): string {
 }
 
 export { isValidDay, isValidTime, isValidDate, getTimeFromString, getDateFromString, getFormatedDate };
-

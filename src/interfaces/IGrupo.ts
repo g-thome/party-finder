@@ -1,4 +1,6 @@
-interface IGrupo {
+import { Document } from 'mongoose';
+
+interface IGrupo extends Document {
   name: string;
   dateTime: Date;
   members: string[];
