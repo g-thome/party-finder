@@ -13,21 +13,8 @@ app.get('/grupos', async (req, res) => {
   res.send(doc);
 });
 
-app.get('/grupos/findOne', async (_, res) => {
-  res.send(await Grupo.findOne());
-});
-
-app.get('/grupos/:id', async (req, res) => {
-  const docId = req.params.id;
-  const doc = await Grupo.find({ _id: docId });
-
-  res.send(doc);
-});
-
 app.post('/grupos', async (req, res) => {
   try {
-    const doc = new Grupo(req.body);
-    res.send(await doc.save());
   } catch (e) {
     res.status(500).send('Invalid payload');
   }
@@ -79,4 +66,3 @@ function startServer() {
 }
 
 export default startServer;
-

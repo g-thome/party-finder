@@ -6,7 +6,8 @@
     "quotemark": [true, "single"],
     "no-console": [false],
     "ordered-imports": false,
-    "object-literal-sort-keys": false
+    "object-literal-sort-keys": false,
+    "interface-name": [true, "always-prefix"]
   },
   "rulesDirectory": []
 }

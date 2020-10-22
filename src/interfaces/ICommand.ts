@@ -1,6 +1,6 @@
 import { Message } from 'discord.js';
 
-interface Command {
+interface ICommand {
   name: string;
   minArgs: number;
   guildOnly: boolean;
@@ -8,4 +8,4 @@ interface Command {
   execute: (msg: Message, args: string[]) => Promise<any>;
 }
 
-export default Command;
+export default ICommand;

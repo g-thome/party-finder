@@ -1,7 +1,7 @@
-interface Grupo {
+interface IGrupo {
   name: string;
   dateTime: Date;
   members: string[];
 }
 
-export default Grupo;
+export default IGrupo;

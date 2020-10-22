@@ -1,4 +1,3 @@
-
 import { Message, MessageEmbed } from 'discord.js';
 import { getFormatedDate } from '../dateTime';
 import { getGruposByMember } from '../API';
